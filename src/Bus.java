@@ -15,12 +15,23 @@ public class Bus {
 	
 	public Bus() {
 		this.setAvailable(true);
-		this.setDistanceKm(0);
-		this.setNumberTrips(0);
-		this.setFuelConsumption(0);
 		this.setCapacity(10);
+		this.setTripsArray(new RegularFlight());
 	}
 	
+	
+	public Bus(int capacity) {
+		this.setAvailable(true);
+		this.setCapacity(capacity);
+		this.setTripsArray(new RegularFlight());
+	}
+	
+	
+	public Bus(Flight trip, int capacity) {
+		this.setAvailable(true);
+		this.setCapacity(capacity);
+		this.setTripsArray(trip);
+	}
 	
 	public Bus(double distance, int trips, double fuelCon, int capacity) {
 		this.setAvailable(true);
@@ -114,8 +125,13 @@ public class Bus {
 	/**
 	 * @param tripsArray the tripsArray to set
 	 */
-	public void setTripsArray(ArrayList<Flight> tripsArray) {
-		this.tripsArray = tripsArray;
+	public void setTripsArray( Flight trip) {
+		this.tripsArray.add(trip);
+		// tell Ahmed to create specific DISTANCE_TO_KAU and FUEL_TO_KAU 
+		// for each child of Flight class as it should be different 
+		this.setCapacity(trip.DISTANCE_TO_KAU + this.getCapacity());
+		this.setFuelConsumption(trip.FUEL_TO_KAU + this.getFuelConsumption());
+		this.setNumberTrips(this.getNumberTrips() + 1);
 	}
 
 
@@ -151,9 +167,10 @@ public class Bus {
 	}
 
 
-	public void loadStudent() {
+	public void loadStudent(Student s) {
 		this.setCapacity(this.getCapacity() - 1);
 		//add student to the array of students in the flight
+		this.getTripsArray()[this.getNumberTrips() - 1].add(s);
 	}
 	
 	
@@ -161,7 +178,7 @@ public class Bus {
 		this.setAvailable(false);
 		this.dormDeparture.setMinutesElapsed(Time.clock); //as the clock will be set to the time the bus was sent in main
 		this.campusArrival.setMinutesElapsed(Time.clock + 30);
-		this.setDistanceKm();
+		
 	}
 	
 	
