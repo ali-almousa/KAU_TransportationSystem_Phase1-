@@ -1,5 +1,6 @@
 
 public class Time {
+	public static int clock;
 	public int minutesElapsed;
 	public int startingHour;
 	public int endingHour;
