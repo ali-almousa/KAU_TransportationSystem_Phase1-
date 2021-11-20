@@ -89,19 +89,19 @@ public class Student {
 	/////////////////////////////////
 	public void randomLectureTime() {
 		int randomMinutes = (int) (Math.random() * ( 32 - 0 ) + 1) * 30;  //32 is the maximum time can be replaced by input 
-		lectureTime.setMinutes(randomMinutes);							  //0 is the minimum time can be replaced by input 
+		lectureTime.setMinutesElapsed(randomMinutes);							  //0 is the minimum time can be replaced by input 
 	}																	  
 	
 	public void randomShowupTime() {
-		int randomMinutes = (int) (Math.random() * ( lectureTime.getMinutes() - 60 ) + 1);
+		int randomMinutes = (int) (Math.random() * ( lectureTime.getMinutesElapsed() - 60 ) + 1);
 	}
 	
 	public void fixIntendedDepartureTime() {
-		intendedDepartureTime.setMinutes( lectureTime.getMinutes() + 30);
+		intendedDepartureTime.setMinutesElapsed( lectureTime.getMinutesElapsed() - 30);
 	}
 	
 	public void fixArrivalTime() {
-		arrivalTime.setMinutes( actualDepartureTime.getMinutes() + 30);
+		arrivalTime.setMinutesElapsed( actualDepartureTime.getMinutesElapsed() + 30);
 	}
 	
 }
