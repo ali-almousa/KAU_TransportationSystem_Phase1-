@@ -9,13 +9,13 @@ public class Time {
 	public Time() {
 		this.setMinutesElapsed(0);
 		this.setStartingHour(6);
-		this.setEndingHour(10);
+		this.setEndingHour(22);
 	}
 	
 	public Time(int mins) {
 		this.setMinutesElapsed(mins);
 		this.setStartingHour(6);
-		this.setEndingHour(10);
+		this.setEndingHour(22);
 	}
 	
 	public Time(int mins, int startH, int endH) {
