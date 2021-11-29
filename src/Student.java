@@ -15,6 +15,15 @@ public class Student implements Comparable<Student>  {
 		this.setShowupTime(randomShowupTime());
 
 	}
+	
+	
+	public Student(int id, boolean hasExam, int IAT, int ST) {
+		this.setID(id);
+		this.setHasExam(hasExam);
+		this.setIntendedArrivalTime(IAT);
+		this.setShowupTime(ST);
+
+	}
 	//Setters & Getters
 	
 	// ID
@@ -103,7 +112,17 @@ public class Student implements Comparable<Student>  {
 	// From this line is just for testing you can delete it-------------
 	@Override
 	public String toString() {
-		return "Student [id=" + id + ",      hasExam=" + hasExam + ",    intendedArrivalTime=" + getTime(intendedArrivalTime) + ",      showupTime=" + getTime(showupTime) + "]";
+//		return "Student ["id=" + id + ",      hasExam=" + hasExam + ",    intendedArrivalTime=" + getTime(intendedArrivalTime) + ",      showupTime=" + getTime(showupTime) + "]";
+		int ID = this.getID();
+		boolean hasE = this.getHasExam();
+		String ST = Time.MinutesToTime(this.getShowupTime());
+		String IAT =  Time.MinutesToTime(this.getIntendedArrivalTime());
+		boolean c = this.isCatch;
+		
+		return  "ID: " + ID + " " +  "hasE: " + hasE + " " +  "ST: " + 
+		ST + " " +  "IAT: " + IAT + " " +  "catch: " + c;
+		
+
 	}
 
 	public static String getTime(int mins) {

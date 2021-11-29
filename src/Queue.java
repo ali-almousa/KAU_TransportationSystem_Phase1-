@@ -29,7 +29,7 @@ class Queue
             System.exit(1);
         }
  
-        System.out.println("Removing " + arr[front]);
+//        System.out.println("Removing " + arr[front]);
  
         front = (front + 1) % capacity;
         count--;
@@ -45,7 +45,7 @@ class Queue
             System.exit(1);
         }
  
-        System.out.println("Inserting " + item);
+//        System.out.println("Inserting " + item);
  
         rear = (rear + 1) % capacity;
         arr[rear] = item;

@@ -113,7 +113,7 @@ public class Bus {
 	}
 	
 	public void checkAval(int mins) {
-		this.setAvailable(this.getAvalAt() == mins);
+		this.setAvailable(mins >= this.getAvalAt());
 	}
 
 	/**
@@ -216,19 +216,31 @@ public class Bus {
 
 
 	public void sendBus(int avalAt, ArrayList<Student> tempStudents) {
+		Flight currentFlight = this.getTripsArray().get(this.getNumberTrips() - 1);
 		this.setAvailable(false);
 		this.setAvalAt(avalAt);
 		this.setDormDeparture(Time.clock); //as the clock will be set to the time the bus was sent in main
-		this.setCampusArrival(Time.clock + this.getTripsArray().get(this.getNumberTrips() - 1).getMINUTES_TO_KAU());
+		this.setCampusArrival(Time.clock + currentFlight.getMINUTES_TO_KAU());
+		
 		//make students in this trip miss or catch
-		int numStudetns = this.getTripsArray().get(this.getNumberTrips() - 1).studentsInTrip.size();
+		
+		currentFlight.setTimeOfArrival(this.getCampusArrival());
+		currentFlight.setTimeOfDeparture(this.getDormDeparture());
+		int numStudetns = currentFlight.studentsInTrip.size();
 		for (int i = 0; i < numStudetns; i++) {
-			Student student = this.getTripsArray().get(this.getNumberTrips() - 1).studentsInTrip.get(i);
-			student.setIsCatch(this.getCampusArrival() < student.getIntendedArrivalTime());
+			Student student = currentFlight.studentsInTrip.get(i);
+			student.setIsCatch(this.getCampusArrival() <= student.getIntendedArrivalTime());
 			tempStudents.add(student);
 		}
 		
+		System.out.println(currentFlight);
+		for(int i = 0; i < numStudetns; i++) {
+			System.out.println(currentFlight.studentsInTrip.get(i));
+		}
+		
 	}
+	
+	
 	
 	public String toString() {
 		return "{Bus Moving at: " + this.getScheduledDormDeparture() + "mins}";

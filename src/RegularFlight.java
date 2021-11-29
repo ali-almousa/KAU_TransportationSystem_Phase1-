@@ -10,6 +10,7 @@ public class RegularFlight extends Flight {
 	
 	public RegularFlight() {
 		setTypeOfFilght("Regular Flight");
+		Flight.incNumFlights();
 	}
 	
 	public ArrayList<Student> getStudentsInTrip() {
