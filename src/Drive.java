@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Scanner;
 
 public class Drive {
@@ -20,7 +21,12 @@ public class Drive {
 		for(int i = 0; i < testStudents; i++) {
 			students.add(new Student());
 		}
+		Collections.sort(students);
 		
+		System.out.println("Test students");
+		for(Student s: students) {
+			System.out.println(s);
+		}
 		
 		
         //create a Queue of busses
@@ -111,7 +117,7 @@ public class Drive {
 				//update availability check availability
 				for(int i = 0; i < testBusses; i++) {
 					Bus currentBus = busses.peek();
-					currentBus.setAvailable(Time.clock);
+					currentBus.checkAval(Time.clock);
 					busses.dequeue();
 					busses.enqueue(currentBus);
 					

@@ -108,8 +108,12 @@ public class Bus {
 	/**
 	 * @param available the available to set
 	 */
-	public void setAvailable(int mins) {
-		this.available = this.getAvalAt() == mins;
+	public void setAvailable(boolean aval) {
+		this.available = aval;
+	}
+	
+	public void checkAval(int mins) {
+		this.setAvailable(this.getAvalAt() == mins);
 	}
 
 	/**
