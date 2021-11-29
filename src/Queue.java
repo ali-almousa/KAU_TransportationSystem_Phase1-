@@ -1,3 +1,5 @@
+import java.util.Arrays;
+
 //
 class Queue
 {
@@ -77,7 +79,8 @@ class Queue
     }
     
     public String toString() {
-    	return "Queue: "+ this.arr;
+    	String arrString = Arrays.toString(this.arr);
+    	return "Queue: "+ arrString;
     }
 }
 

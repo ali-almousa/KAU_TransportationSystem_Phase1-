@@ -110,12 +110,12 @@ public class Drive {
 			
 				//update availability check availability
 				for(int i = 0; i < testBusses; i++) {
-					//formula for cal the scheduled dorm departure
-					scheduledDormDeparture = 30*i + 30;
-					busses.enqueue(new Bus(scheduledDormDeparture));
-//					busses.add(new Bus(scheduledDormDeparture));
+					Bus currentBus = busses.peek();
+					currentBus.setAvailable(Time.clock);
+					busses.dequeue();
+					busses.enqueue(currentBus);
+					
 				}
-				bus.setAvailable(bus.avalAt == Time.clock);
 				
 			
 				

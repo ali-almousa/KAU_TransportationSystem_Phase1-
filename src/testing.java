@@ -8,11 +8,28 @@ public class testing {
 			scheduledDormDeparture = 30*i + 30;
 			q.enqueue(new Bus(scheduledDormDeparture));
 		}
+		
 		System.out.println(q);
+		
 		Bus bus = q.peek();
+		System.out.println(bus);
 		q.dequeue();
 		q.enqueue(bus);
 		System.out.println(q);
+		Bus buss = q.peek();
+		System.out.println(buss);
+		q.dequeue();
+		q.enqueue(buss);
+		Bus busss = q.peek();
+		System.out.println(busss);
+		q.dequeue();
+		q.enqueue(busss);
+		Bus bussss = q.peek();
+		System.out.println(bussss);
+		q.dequeue();
+		q.enqueue(bussss);
+		System.out.println(q.peek());
+		
 //        System.out.println("The front element is " + q.peek());
 //        q.dequeue();
 //        System.out.println("The front element is " + q.peek());
