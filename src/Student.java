@@ -1,17 +1,20 @@
-
-public class Student {
+public class Student implements Comparable<Student>  {
 	
 	//Variables of student
-	int id;
-	boolean hasExam;
-	boolean catch_miss;
+	int id;				
+	boolean hasExam;	
+	boolean isCatch;
+	int intendedArrivalTime;
+	int showupTime;	
 	
-	Time lectureTime;
-	Time intendedDepartureTime;
-	Time showupTime;
-	Time actualDepartureTime;
-	Time arrivalTime;
-	
+	//Constructors
+	public Student() {
+		this.setID(randomID());
+		this.setHasExam(randomExamCondition());
+		this.setIntendedArrivalTime(randomIntendedArrivalTime());
+		this.setShowupTime(randomShowupTime());
+
+	}
 	//Setters & Getters
 	
 	// ID
@@ -32,76 +35,88 @@ public class Student {
 		return this.hasExam;
 	}
 	
-	//catch_miss
-	public void setCatchMiss(boolean CM) {
-		this.catch_miss = CM;
-	}
+	//IsCatch
+	public void setIsCatch(boolean isCatch ) {
+		this.isCatch = isCatch; 
 		
-	public boolean getCatchMiss() {
-		return this.catch_miss;
 	}
 	
-	//lectureTime
-	public void setLectureTime(Time ob) {
-		lectureTime = ob;
+	public boolean isCatch() {
+		return isCatch;
 	}
-	
-	public Time getLectureTime() {
-		return lectureTime;
-	}
-	
-	//IntendedDepartureTime
-	public void setIntendedDepartureTime(Time ob) {
-		intendedDepartureTime = ob;
-	}
-	
-	public Time getIntendedDepartureTime() {
-		return intendedDepartureTime;
-	}
-	
 	//ShowupTime
-	public void setShowupTime(Time ob) {
-		showupTime = ob;
+	public void setShowupTime(int mins) {
+		showupTime = mins;
 	}
 	
-	public Time getShowupTime() {
+	public int getShowupTime() {
 		return showupTime;
 	}
 	
-	//ActualDepartureTime
-	public void setActualDepartureTime(Time ob) {
-		actualDepartureTime = ob;
+	//IntendedDepartureTime
+	public void setIntendedArrivalTime(int mins) {
+		intendedArrivalTime = mins;
 	}
 	
-	public Time getActualDepartureTime() {
-		return actualDepartureTime;
+	public int getIntendedArrivalTime() {
+		return intendedArrivalTime ;
 	}
 	
-	//ArrivalTime
-	public void setArrivalTime(Time ob) {
-		arrivalTime = ob;
+	//-----------------------------															  
+	
+	public int randomID() {
+
+		int id = (int) (Math.random() * (1000000) ) + 1000000;
+		return id;
 	}
 	
-	public Time getArrivalTime() {
-		return arrivalTime;
+	public boolean randomExamCondition() {
+		boolean Exam = Math.random() < 0.95? false:true;
+		return Exam;
 	}
 	
-	/////////////////////////////////
-	public void randomLectureTime() {
-		int randomMinutes = (int) (Math.random() * ( 32 - 0 ) + 1) * 30;  //32 is the maximum time can be replaced by input 
-		lectureTime.setMinutesElapsed(randomMinutes);							  //0 is the minimum time can be replaced by input 
-	}																	  
-	
-	public void randomShowupTime() {
-		int randomMinutes = (int) (Math.random() * ( lectureTime.getMinutesElapsed() - 60 ) + 1);
+	public int randomShowupTime() {
+		int randomMinutes =  getIntendedArrivalTime() - 60 + (int) (Math.random() * 30) ;
+		return randomMinutes;
 	}
 	
-	public void fixIntendedDepartureTime() {
-		intendedDepartureTime.setMinutesElapsed( lectureTime.getMinutesElapsed() - 30);
+	public int randomIntendedArrivalTime() {
+		  int randomTime = (int) (Math.random() * ( 32 ) + 1) * 30;
+		  if (randomTime == 960) {
+			  return randomTime;
+		  } else if (randomTime < 60) {
+			  return randomTime + 60;
+		  }else 
+			  return randomTime;
 	}
-	
-	public void fixArrivalTime() {
-		arrivalTime.setMinutesElapsed( actualDepartureTime.getMinutesElapsed() + 30);
+
+	@Override
+	public int compareTo(Student comparestu)
+    {
+        int compareShowUpTime = ((Student)comparestu).getShowupTime();
+        //  For Ascending order
+        return this.showupTime - compareShowUpTime;
+
+    }
+
+
+	// From this line is just for testing you can delete it-------------
+	@Override
+	public String toString() {
+		return "Student [id=" + id + ",      hasExam=" + hasExam + ",    intendedArrivalTime=" + getTime(intendedArrivalTime) + ",      showupTime=" + getTime(showupTime) + "]";
 	}
-	
+
+	public static String getTime(int mins) {
+			
+			String amPm = "AM";
+			int hours = (mins / 60)  + 6;
+			int minutes = mins % 60;
+			if (hours > 12) {
+				hours -= 12;
+				amPm = amPm.replace('A', 'P');
+			}
+			
+		String time = String.format("%d:%02d %s", hours, minutes, amPm);
+		return time;
+		}
 }

@@ -6,25 +6,29 @@ public class Bus {
 	public double fuelConsumption;
 	public boolean available;
 	public int capacity;
+	public int avalAt;
+	
 	
 	
 	public ArrayList<Flight> tripsArray;
-	public Time campusArrival;
-	public Time dormDeparture;
+	public int campusArrival;
+	public int dormDeparture;
+	public int scheduledDormDeparture;
 	
 	
-	public Bus() {
+	public Bus(int scheduledDormDeparture) {
 		this.setAvailable(true);
 		this.setCapacity(10);
-		this.setTripsArray(new RegularFlight());
+		this.setTripsArray(new RegularFlight(Time.clock));
+		this.setScheduledDormDeparture(scheduledDormDeparture);
 	}
 	
 	
-	public Bus(int capacity) {
-		this.setAvailable(true);
-		this.setCapacity(capacity);
-		this.setTripsArray(new RegularFlight());
-	}
+//	public Bus(int capacity) {
+//		this.setAvailable(true);
+//		this.setCapacity(capacity);
+//		this.setTripsArray(new RegularFlight());
+//	}
 	
 	
 	public Bus(Flight trip, int capacity) {
@@ -42,6 +46,23 @@ public class Bus {
 	}
 	
 	
+
+	
+	/**
+	 * @return the scheduledDormDeparture
+	 */
+	public int getScheduledDormDeparture() {
+		return scheduledDormDeparture;
+	}
+
+
+	/**
+	 * @param scheduledDormDeparture the scheduledDormDeparture to set
+	 */
+	public void setScheduledDormDeparture(int scheduledDormDeparture) {
+		this.scheduledDormDeparture = scheduledDormDeparture;
+	}
+
 
 	/**
 	 * @return the numberTrips
@@ -127,9 +148,9 @@ public class Bus {
 	 */
 	public void setTripsArray( Flight trip) {
 		this.tripsArray.add(trip);
-		// tell Ahmed to create specific DISTANCE_TO_KAU and FUEL_TO_KAU 
-		// for each child of Flight class as it should be different 
-		this.setCapacity(trip.DISTANCE_TO_KAU + this.getCapacity());
+		// setting cumulative attributes
+//		this.setCapacity(trip.DISTANCE_TO_KAU + this.getCapacity());
+		this.setDistanceKm(this.getDistanceKm() + 2 * trip.getDISTANCE_TO_KAU());
 		this.setFuelConsumption(trip.FUEL_TO_KAU + this.getFuelConsumption());
 		this.setNumberTrips(this.getNumberTrips() + 1);
 	}
@@ -138,7 +159,8 @@ public class Bus {
 	/**
 	 * @return the campusArrival
 	 */
-	public Time getCampusArrival() {
+	// will return the time the bus will arrive to the campus in mins form
+	public int getCampusArrival() {
 		return campusArrival;
 	}
 
@@ -146,15 +168,15 @@ public class Bus {
 	/**
 	 * @param campusArrival the campusArrival to set
 	 */
-	public void setCampusArrival(Time campusArrival) {
-		this.campusArrival = campusArrival;
+	public void setCampusArrival(int mins) {
+		this.campusArrival = mins;
 	}
 
 
 	/**
 	 * @return the dormDeparture
 	 */
-	public Time getDormDeparture() {
+	public int getDormDeparture() {
 		return dormDeparture;
 	}
 
@@ -162,24 +184,53 @@ public class Bus {
 	/**
 	 * @param dormDeparture the dormDeparture to set
 	 */
-	public void setDormDeparture(Time dormDeparture) {
-		this.dormDeparture = dormDeparture;
+	public void setDormDeparture(int mins) {
+		this.dormDeparture = mins;
 	}
 
 
 	public void loadStudent(Student s) {
 		this.setCapacity(this.getCapacity() - 1);
+		//update the aval
+		if (this.getCapacity() == 0) {
+			this.setAvailable(false);
+		}
 		//add student to the array of students in the flight
-		this.getTripsArray()[this.getNumberTrips() - 1].add(s);
+		this.getTripsArray()[this.getNumberTrips() - 1].studentsInTrip.add(s);
 	}
 	
 	
-	public void sendBus() {
+	/**
+	 * @return the avalAt
+	 */
+	public int getAvalAt() {
+		return avalAt;
+	}
+
+
+	/**
+	 * @param avalAt the avalAt to set
+	 */
+	public void setAvalAt(int avalAt) {
+		this.avalAt = avalAt;
+	}
+
+
+	public void sendBus(int avalAt) {
 		this.setAvailable(false);
-		this.dormDeparture.setMinutesElapsed(Time.clock); //as the clock will be set to the time the bus was sent in main
-		this.campusArrival.setMinutesElapsed(Time.clock + 30);
+		this.setAvalAt(avalAt);
+		this.setDormDeparture(Time.clock); //as the clock will be set to the time the bus was sent in main
+		this.setCampusArrival(Time.clock + this.getTripsArray().get(this.getNumberTrips() - 1).getMINUTES_TO_KAU);
+		//make students in this trip miss or catch
+		int numStudetns = this.getTripsArray().get(this.getNumberTrips() - 1).studentsInTrip.size();
+		for (int i = 0; i < numStudetns; i++) {
+			Student student = this.getTripsArray().get(this.getNumberTrips() - 1).studentsInTrip.get(i);
+			student.setCatchMiss(this.getCampusArrival() >= student.getIntendedTime());
+		}
 		
 	}
+	
+
 	
 	
 
