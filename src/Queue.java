@@ -75,6 +75,10 @@ class Queue
     public Boolean isFull() {
         return (size() == capacity);
     }
+    
+    public String toString() {
+    	return "Queue: "+ this.arr;
+    }
 }
 
 

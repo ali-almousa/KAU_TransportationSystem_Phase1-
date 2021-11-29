@@ -82,7 +82,7 @@ public class Time {
 	
 	
 	public void resetTime() {
-		this.setMinutesElapsed(0);
+//		this.setMinutesElapsed(0);
 		Time.clock = this.getStartingHour();
 	}
 	

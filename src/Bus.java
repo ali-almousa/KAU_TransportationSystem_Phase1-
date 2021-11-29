@@ -10,7 +10,7 @@ public class Bus {
 	
 	
 	
-	public ArrayList<Flight> tripsArray;
+	public ArrayList<Flight> tripsArray = new ArrayList<>();
 	public int campusArrival;
 	public int dormDeparture;
 	public int scheduledDormDeparture;
@@ -19,16 +19,9 @@ public class Bus {
 	public Bus(int scheduledDormDeparture) {
 		this.setAvailable(true);
 		this.setCapacity(10);
-		this.setTripsArray(new RegularFlight(Time.clock));
+		this.setTripsArray(new RegularFlight());
 		this.setScheduledDormDeparture(scheduledDormDeparture);
 	}
-	
-	
-//	public Bus(int capacity) {
-//		this.setAvailable(true);
-//		this.setCapacity(capacity);
-//		this.setTripsArray(new RegularFlight());
-//	}
 	
 	
 	public Bus(Flight trip, int capacity) {
@@ -36,6 +29,7 @@ public class Bus {
 		this.setCapacity(capacity);
 		this.setTripsArray(trip);
 	}
+	
 	
 	public Bus(double distance, int trips, double fuelCon, int capacity) {
 		this.setAvailable(true);
@@ -45,8 +39,6 @@ public class Bus {
 		this.setCapacity(capacity);
 	}
 	
-	
-
 	
 	/**
 	 * @return the scheduledDormDeparture
@@ -151,7 +143,7 @@ public class Bus {
 		// setting cumulative attributes
 //		this.setCapacity(trip.DISTANCE_TO_KAU + this.getCapacity());
 		this.setDistanceKm(this.getDistanceKm() + 2 * trip.getDISTANCE_TO_KAU());
-		this.setFuelConsumption(trip.FUEL_TO_KAU + this.getFuelConsumption());
+		this.setFuelConsumption(trip.getFUEL_TO_KAU() + this.getFuelConsumption());
 		this.setNumberTrips(this.getNumberTrips() + 1);
 	}
 
@@ -195,8 +187,11 @@ public class Bus {
 		if (this.getCapacity() == 0) {
 			this.setAvailable(false);
 		}
+		
+		Flight lastTrip = this.getTripsArray().get(this.getNumberTrips() - 1);
 		//add student to the array of students in the flight
-		this.getTripsArray()[this.getNumberTrips() - 1].studentsInTrip.add(s);
+		//P2: make casting dynamic
+		((RegularFlight)lastTrip).getStudentsInTrip().add(s);
 	}
 	
 	
@@ -216,18 +211,23 @@ public class Bus {
 	}
 
 
-	public void sendBus(int avalAt) {
+	public void sendBus(int avalAt, ArrayList<Student> tempStudents) {
 		this.setAvailable(false);
 		this.setAvalAt(avalAt);
 		this.setDormDeparture(Time.clock); //as the clock will be set to the time the bus was sent in main
-		this.setCampusArrival(Time.clock + this.getTripsArray().get(this.getNumberTrips() - 1).getMINUTES_TO_KAU);
+		this.setCampusArrival(Time.clock + this.getTripsArray().get(this.getNumberTrips() - 1).getMINUTES_TO_KAU());
 		//make students in this trip miss or catch
 		int numStudetns = this.getTripsArray().get(this.getNumberTrips() - 1).studentsInTrip.size();
 		for (int i = 0; i < numStudetns; i++) {
 			Student student = this.getTripsArray().get(this.getNumberTrips() - 1).studentsInTrip.get(i);
-			student.setCatchMiss(this.getCampusArrival() >= student.getIntendedTime());
+			student.setIsCatch(this.getCampusArrival() < student.getIntendedArrivalTime());
+			tempStudents.add(student);
 		}
 		
+	}
+	
+	public String toString() {
+		return "{Bus Moving at: " + this.getScheduledDormDeparture() + "mins}";
 	}
 	
 

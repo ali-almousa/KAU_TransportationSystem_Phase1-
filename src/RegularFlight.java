@@ -52,10 +52,5 @@ public class RegularFlight extends Flight {
 		this.timeOfArrival = timeOfArrival;
 	}
 
-	
-	@Override
-	public void setTypeOfFilght(String typeOfFilght) {
-		this.typeOfFilght = typeOfFilght; 
-	}
 
 }

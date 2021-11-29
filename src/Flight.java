@@ -22,7 +22,9 @@ public abstract class Flight {
 		return typeOfFilght;
 	}
 		
-	public abstract void setTypeOfFilght(String typeOfFilght);
+	public void setTypeOfFilght(String typeOfFilght) {
+		this.typeOfFilght = typeOfFilght; 
+	};
 	
 	public abstract double getDISTANCE_TO_KAU();
 

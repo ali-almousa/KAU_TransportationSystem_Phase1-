@@ -16,7 +16,7 @@ public class Drive {
 
         //create an ordered array of random students based on showed up times
 		int testStudents = input.nextInt();
-		ArrayList<Student> students = null;
+		ArrayList<Student> students = new ArrayList<>();
 		for(int i = 0; i < testStudents; i++) {
 			students.add(new Student());
 		}
@@ -41,25 +41,26 @@ public class Drive {
         //initillize main while loop (number of days)
 		while(testDays > 0) {
 			//create a temp array of arrived students
+			ArrayList<Student> tempStudents = new ArrayList<>();
             //inner while loop (default 16 hours)
 			int testHours = realClock.endingHour - realClock.startingHour;
 			
 
 	        // generate a flight according to clock
-			Flight flightType = new RegularFlight(realClock.clock);
+//			Flight flightType = new RegularFlight(realClock.clock);
+			Flight flightType = new RegularFlight();
 			
 			//create pointers(bus and student)
 			int studentPointer = 0;
-			int busPointer = 0;
 			
 			//while loop on the array of students
 			while (students.size() != 0) {
 				//current bus
-				Bus bus = busses.get(busPointer);
+				Bus bus = busses.peek();
 				//current student
 				Student student = students.get(studentPointer);
 				//current trip
-				Flight trip = bus.getTripsArray(bus.getNumberTrips() - 1);
+				Flight trip = bus.getTripsArray().get(bus.getNumberTrips() - 1);
 				
 				
 				
@@ -70,21 +71,21 @@ public class Drive {
 				}
 			
                 //else if showed up = clock
-				else if (students.get(studentPointer).getShowupTime().getMinutesElapsed() == Time.clock) {
+				else if (student.getShowupTime() == Time.clock) {
 					/// {check that capacity != -1}
                     //load to bus and incerement student pointer
-					busses.get(busPointer).loadStudent(students.get(studentPointer));
+					bus.loadStudent(students.get(studentPointer));
 					studentPointer++;
 					
 				}
 			
                 //else if showed up < clock
-				else if (students.get(studentPointer).getShowupTime().getMinutesElapsed() < Time.clock) {
+				else if (student.getShowupTime() < Time.clock) {
 					
 					//if arrival time of the this bus is > the intended time of S
-					if (busses.get(busPointer).getCampusArrival() > students.get(studentPointer).getIntendedDepartureTime()) {
+					if (bus.getCampusArrival() > student.getIntendedArrivalTime()) {
 						//load to bus + increment pointer student
-						busses.get(busPointer).loadStudent(students.get(studentPointer));
+						bus.loadStudent(students.get(studentPointer));
 						studentPointer++;
 					}
 				
@@ -92,7 +93,7 @@ public class Drive {
 					//else
 					else {
 						//load
-						busses.get(busPointer).loadStudent(students.get(studentPointer));
+						bus.loadStudent(students.get(studentPointer));
 						studentPointer++;
 						// we didn't increment student pointer WHY? 
 						
@@ -109,7 +110,7 @@ public class Drive {
 			
 				//update availability check availability
 				for(int i = 0; i < testBusses; i++) {
-					//formula for cal the schduled dorm departure
+					//formula for cal the scheduled dorm departure
 					scheduledDormDeparture = 30*i + 30;
 					busses.enqueue(new Bus(scheduledDormDeparture));
 //					busses.add(new Bus(scheduledDormDeparture));
@@ -121,33 +122,53 @@ public class Drive {
 				// if capacity is full:
 				if (bus.getCapacity() == 0) {
                     // 1- send the bus (change availability to false)
-					bus.sendBus(Time.clock + 2*trip.getMINUTES_TO_KAU());
+					bus.sendBus(Time.clock + 2*trip.getMINUTES_TO_KAU(), tempStudents);
                     // 2- update data of the busses
                         // - time of arrival
                         // - time of departure
                         // - distance covered
                         // - fuel consumption
                         // - add trip to trips array
+					
+					
+					
+					
                     // 3- increment the bus pointer of the array
-					busPointer++;
+					busses.dequeue();
+					busses.enqueue(bus);
+					
+					
+					
+					
                     // 4- update the clock to the current scheduled bus departure time (jump forward)
 					Time.setClock(bus.getScheduledDormDeparture());
                     // 5- continue loading students with updated clock
 					continue;
+				}
         		// else if capacity is not full:
 				else if (bus.getCapacity() > 0) {
 					// if clock meets (every 30 mins a bus should move regardless of students) && there is at least one student in the bus:
-					if (bus.getScheduledDormDeparture() == Time.clock && bus.getTripsArray(bus.getNumberTrips() - 1).studentsInTrip.size() != 0) {
+					if (bus.getScheduledDormDeparture() == Time.clock && bus.getTripsArray().get(bus.getNumberTrips() - 1).studentsInTrip.size() != 0) {
 	                // 1- send the bus (change availability to false)
-						bus.sendBus(Time.clock + 2*trip.getMINUTES_TO_KAU());
+						bus.sendBus(Time.clock + 2*trip.getMINUTES_TO_KAU(), tempStudents);
 	                // 2- update data of the busses
 	                    // - time of arrival
 	                    // - time of departure
 	                    // - distance covered
 	                    // - fuel consumption
 	                    // - add trip to trips array
+						
+						
+						
+						
+						
 	                // 3- increment the bus pointer of the array
-						busPointer++;
+						busses.dequeue();
+						busses.enqueue(bus);
+						
+						
+						
+						
 	                // 4- update the clock to the next bus departure time (jump forward) 
 						Time.setClock(bus.getScheduledDormDeparture());
 	                // 5- continue loading students with updated clock
@@ -156,18 +177,29 @@ public class Drive {
 				
 			
 					// else if the student pointer is null && there is at least one student in the bus
-					else if (studentPointer >= students.size() && bus.getTripsArray(bus.getNumberTrips() - 1).studentsInTrip.size() > 0) {
+					else if (studentPointer >= students.size() && bus.getTripsArray().get(bus.getNumberTrips() - 1).studentsInTrip.size() > 0) {
 						
 						//send the bus
-						bus.sendBus(Time.clock + 2*trip.getMINUTES_TO_KAU());
+						bus.sendBus(Time.clock + 2*trip.getMINUTES_TO_KAU(), tempStudents);
 					}
 			
 					}
 		}//end students loop
 		
-		//loop in the array of arrived students and the array of busses and print the report
+		//loop in the array of arrived students and print the report
+		for(int i = 0; i < tempStudents.size(); i++) {
+			Student s = tempStudents.get(i);
+			System.out.println(s);
+		}
+		// loop in the array of busses and print the report
+		
+		
 		//reinitilize the array of students and busses and reset clock
+		Time.clock = realClock.getStartingHour();
+		tempStudents.removeAll(tempStudents);
+		
 		//reinitilize pointers(bus and student)
+		studentPointer = 0;
 		} //end days loop
 		
 		
