@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class RegularFlight extends Flight {
 	
 	
@@ -6,14 +8,19 @@ public class RegularFlight extends Flight {
 	public static final int MINUTES_TO_KAU = 30;
 	public static final int FUEL_TO_KAU = 10;
 	
-	public Time timeOfDeparture;
-	public Time timeOfArrival;
-	
-	public RegularFlight(int clock) {
-		timeOfDeparture.setMinutesElapsed(clock);
-	    timeOfArrival.setMinutesElapsed(timeOfDeparture.getMinutesElapsed() + getMINUTES_TO_KAU());
-		
+	public RegularFlight() {
+		setTypeOfFilght("Regular Flight");
 	}
+	
+	public ArrayList<Student> getStudentsInTrip() {
+		return studentsInTrip;
+	}
+
+	public void setStudentsInTrip(ArrayList<Student> studentsInTrip) {
+		this.studentsInTrip = studentsInTrip;
+	}
+	
+	
 	@Override
 	public double getDISTANCE_TO_KAU() {
 		return DISTANCE_TO_KAU;
@@ -29,28 +36,26 @@ public class RegularFlight extends Flight {
 	}
 	
 	@Override
-	public void fixTimeOfArrival() {
-		timeOfArrival.setMinutesElapsed(timeOfDeparture.getMinutesElapsed() + getMINUTES_TO_KAU());
-	}
-	@Override
-	public void fixTimeOfDeparture(int min) {   // min here represent the clock at that time of generating the flight
-		timeOfDeparture.setMinutesElapsed(min); // Example: at 8:30 we generate flight inputing clock = 150
-	}
-	
-	public Time getTimeOfDeparture() {
+	public int getTimeOfDeparture() {
 		return timeOfDeparture;
 	}
-	
-	public void setTimeOfDeparture(Time timeOfDeparture) {
+	@Override
+	public void setTimeOfDeparture(int timeOfDeparture) {
 		this.timeOfDeparture = timeOfDeparture;
 	}
-	
-	public Time getTimeOfArrival() {
+	@Override
+	public int getTimeOfArrival() {
 		return timeOfArrival;
 	}
-	
-	public void setTimeOfArrival(Time timeOfArrival) {
+	@Override
+	public void setTimeOfArrival(int timeOfArrival) {
 		this.timeOfArrival = timeOfArrival;
+	}
+
+	
+	@Override
+	public void setTypeOfFilght(String typeOfFilght) {
+		this.typeOfFilght = typeOfFilght; 
 	}
 
 }

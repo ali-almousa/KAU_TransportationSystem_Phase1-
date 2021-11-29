@@ -119,9 +119,9 @@ public class Time {
 		
 		
 		//
-		public String timeToMinutes(String time) {
-			
-	}
+//		public String timeToMinutes(String time) {
+//			
+//	}
 		
 		public static void setClock(int mins) {
 			Time.clock = mins;

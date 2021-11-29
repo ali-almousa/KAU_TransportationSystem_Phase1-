@@ -2,13 +2,10 @@
 public class Q1 {
 
 	public static void main(String[] args) {
-		int x = 20;
+		int[] x = {1,2,3,4,1};
+		System.out.println(x[-1]);
 		
-		System.out.println("Before the call, x is " + x);
 		
-		increment(x);
-		
-		System.out.println("After the call, x is " + x);
 
 	}
 
