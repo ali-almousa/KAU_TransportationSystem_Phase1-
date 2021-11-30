@@ -28,17 +28,17 @@ public class Drive {
 //			students.add(new Student());
 //		}
 //		//fixed students2
-		students.add(new Student(1946282, false, 960, 900));//1
-		students.add(new Student(1946282, false, 960, 900));
-		students.add(new Student(1946282, false, 960, 900));
-		students.add(new Student(1946282, false, 960, 900));
-		students.add(new Student(1946282, false, 960, 900));
-		students.add(new Student(1946282, false, 960, 900));
-		students.add(new Student(1946282, false, 960, 900));
-		students.add(new Student(1946282, false, 960, 900));
-		students.add(new Student(1946282, false, 960, 900));
-		students.add(new Student(1946282, false, 960, 900));//10
+		students.add(new Student(1946282, false, 960, 901));//1
 		students.add(new Student(1946282, false, 960, 901));
+		students.add(new Student(1946282, false, 960, 901));
+		students.add(new Student(1946282, false, 960, 901));
+		students.add(new Student(1946282, false, 960, 901));
+		students.add(new Student(1946282, false, 960, 901));
+		students.add(new Student(1946282, false, 960, 901));
+		students.add(new Student(1946282, false, 960, 901));
+		students.add(new Student(1946282, false, 960, 901));
+		students.add(new Student(1946282, false, 960, 901));//10
+		students.add(new Student(1946282, false, 960, 902));
 //		//fixed students1
 //		students.add(new Student(1946282, false, 90, 41));
 //		students.add(new Student(1945427, false, 300, 240));
@@ -210,7 +210,7 @@ public class Drive {
 					continue;
 				}
 		}//end students loop
-		
+	
 		//loop in the array of arrived students and print the report
 		System.out.println("\n\nstudents in the whole day:");
 		System.out.println(tempStudents.size());

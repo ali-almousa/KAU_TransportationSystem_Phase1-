@@ -71,6 +71,10 @@ public class Bus {
 	 * @param scheduledDormDeparture the scheduledDormDeparture to set
 	 */
 	public void setScheduledDormDeparture(int scheduledDormDeparture) {
+		//if scheduledDormDeparture is 10:00pm then set this bus as unavailable  
+		if(scheduledDormDeparture >= 960) {
+			this.setAvailable(false);
+		}
 		this.scheduledDormDeparture = scheduledDormDeparture;
 	}
 
@@ -132,6 +136,8 @@ public class Bus {
 	}
 	
 	public void checkAval(int mins) {
+		// if there is a time set for available then execute the logic
+		if(this.getAvalAt() != 0)
 		this.setAvailable(mins >= this.getAvalAt());
 	}
 
