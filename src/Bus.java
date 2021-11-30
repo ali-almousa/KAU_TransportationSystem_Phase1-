@@ -283,9 +283,9 @@ public class Bus {
 		
 		this.getFlightStudents().clear();
 		
-		if (Time.clock >= 930) {
-			this.addTripsArray(new RegularFlight());
-		}
+//		if (Time.clock >= 930) {
+//			this.addTripsArray(new RegularFlight());
+//		}
 		
 	}
 	

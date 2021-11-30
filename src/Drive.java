@@ -27,12 +27,24 @@ public class Drive {
 //		for(int i = 0; i < testStudents; i++) {
 //			students.add(new Student());
 //		}
-//		//fixed students
-		students.add(new Student(1946282, false, 90, 41));
+//		//fixed students2
+		students.add(new Student(1946282, false, 960, 900));//1
+		students.add(new Student(1946282, false, 960, 900));
+		students.add(new Student(1946282, false, 960, 900));
+		students.add(new Student(1946282, false, 960, 900));
+		students.add(new Student(1946282, false, 960, 900));
+		students.add(new Student(1946282, false, 960, 900));
+		students.add(new Student(1946282, false, 960, 900));
+		students.add(new Student(1946282, false, 960, 900));
+		students.add(new Student(1946282, false, 960, 900));
+		students.add(new Student(1946282, false, 960, 900));//10
+		students.add(new Student(1946282, false, 960, 901));
+//		//fixed students1
+//		students.add(new Student(1946282, false, 90, 41));
 //		students.add(new Student(1945427, false, 300, 240));
-		students.add(new Student(1945541, false, 330, 282));
+//		students.add(new Student(1945541, false, 330, 282));
 //		students.add(new Student(1935944, false, 420, 365));
-		students.add(new Student(1935944, false, 750, 705));
+//		students.add(new Student(1935944, false, 750, 705));
 		//OUR TEAM
 //		students.add(new Student(1946282, false, 90, 30));
 //		students.add(new Student(1945427, false, 60, 1));
@@ -81,7 +93,14 @@ public class Drive {
 				if (Time.clock >= realClock.endingHour) break;
 				
 				//update availability after incrementing the clock
-				updateAval(testBusses, busses);
+//				updateAval(testBusses, busses);
+				//update availability after incrementing the clock
+				for(int i = 0; i < testBusses; i++) {
+					Bus currentBus = busses.peek();
+					currentBus.checkAval(Time.clock);
+					busses.dequeue();
+					busses.enqueue(currentBus);
+				}
 				
 				//current bus & current student
 				Bus bus = busses.peek();
@@ -111,7 +130,14 @@ public class Drive {
 				}
 				
 				//update availability after incrementing the clock
-				updateAval(testBusses, busses);
+//				updateAval(testBusses, busses);
+				//update availability after incrementing the clock
+				for(int i = 0; i < testBusses; i++) {
+					Bus currentBus = busses.peek();
+					currentBus.checkAval(Time.clock);
+					busses.dequeue();
+					busses.enqueue(currentBus);
+				}
 
 				// if capacity is full:
 				if (bus.getCapacity() == 0) {
@@ -158,6 +184,10 @@ public class Drive {
 					else if (studentPointer >= students.size()) {
 						//send the bus
 						System.out.println();
+						while (true) {
+							if (bus.getScheduledDormDeparture() == Time.clock) break;
+							Time.incrementClock();	
+						}
 						bus.sendBus(Time.clock, tempStudents);
 						break;
 					}
@@ -173,7 +203,7 @@ public class Drive {
 						Bus current = busses.peek();
 						current.setScheduledDormDeparture(NSDD);
 						busses.dequeue();
-						busses.enqueue(bus);
+						busses.enqueue(current);
 					}
 //					bus.setScheduledDormDeparture(Time.clock + 30);
                     // 5- continue loading students with updated scheduled dormDeparture
