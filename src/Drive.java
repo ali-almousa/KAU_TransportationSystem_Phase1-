@@ -3,7 +3,7 @@ import java.util.Collections;
 import java.util.Scanner;
 
 public class Drive {
-
+	
 	public static void main(String[] args) {
         // create time object
 		Time realClock = new Time();
@@ -20,25 +20,25 @@ public class Drive {
 		
 		//************************STUDENTS*************************
         //create an ordered array of random students based on showed up times
-		System.out.println("Number of students: ");
-		int testStudents = input.nextInt();
-		ArrayList<Student> students = new ArrayList<>();
+//		System.out.println("Number of students: ");
+//		int testStudents = input.nextInt();
+//		ArrayList<Student> students = new ArrayList<>();
 		
 //		for(int i = 0; i < testStudents; i++) {
 //			students.add(new Student());
 //		}
 //		//fixed students2
-		students.add(new Student(1946282, false, 960, 901));//1
-		students.add(new Student(1946282, false, 960, 901));
-		students.add(new Student(1946282, false, 960, 901));
-		students.add(new Student(1946282, false, 960, 901));
-		students.add(new Student(1946282, false, 960, 901));
-		students.add(new Student(1946282, false, 960, 901));
-		students.add(new Student(1946282, false, 960, 901));
-		students.add(new Student(1946282, false, 960, 901));
-		students.add(new Student(1946282, false, 960, 901));
-		students.add(new Student(1946282, false, 960, 901));//10
-		students.add(new Student(1946282, false, 960, 902));
+//		students.add(new Student(1946282, false, 960, 901));//1
+//		students.add(new Student(1946282, false, 960, 901));
+//		students.add(new Student(1946282, false, 960, 901));
+//		students.add(new Student(1946282, false, 960, 901));
+//		students.add(new Student(1946282, false, 960, 901));
+//		students.add(new Student(1946282, false, 960, 901));
+//		students.add(new Student(1946282, false, 960, 901));
+//		students.add(new Student(1946282, false, 960, 901));
+//		students.add(new Student(1946282, false, 960, 901));
+//		students.add(new Student(1946282, false, 960, 901));//10
+//		students.add(new Student(1946282, false, 960, 902));
 //		//fixed students1
 //		students.add(new Student(1946282, false, 90, 41));
 //		students.add(new Student(1945427, false, 300, 240));
@@ -50,11 +50,12 @@ public class Drive {
 //		students.add(new Student(1945427, false, 60, 1));
 //		students.add(new Student(1945541, false, 60, 2));
 //		students.add(new Student(1935944, false, 90, 31));
-		Collections.sort(students);
-		System.out.println("Test students");
-		for(Student s: students) {
-			System.out.println(s);
-		}
+//		Collections.sort(students);
+		
+//		System.out.println("Test students");
+//		for(Student s: students) {
+//			System.out.println(s);
+//		}
 		
 		
 		
@@ -79,7 +80,14 @@ public class Drive {
 		
 		//********************LOOPS(MAIN TASK)************************
         //initillize main while loop (number of days)
+		int days = 1;
 		while(testDays > 0) {
+			
+			//************************STUDENTS*************************
+	        //create an ordered array of random students based on showed up times
+			ArrayList<Student> students = generateRandomStudents(days);
+
+			
 			//create a temp array of arrived students
 			ArrayList<Student> tempStudents = new ArrayList<>();
 
@@ -87,7 +95,9 @@ public class Drive {
 			int studentPointer = 0;
 			
 			//while loop on the array of students
+			System.out.println("printing the reporting of day#" + days);
 			while (tempStudents.size() < students.size()) {
+				
 				
 				// if clock >= realClock.endingHour
 				if (Time.clock >= realClock.endingHour) break;
@@ -195,20 +205,24 @@ public class Drive {
 					}
 				
 				// if there are no students in the bus and clock meets scheduled dormDeparture:
-				if (bus.getCapacity() == 10 && bus.getScheduledDormDeparture() == Time.clock) {
-                    //update the scheduled dormDeparture to the current scheduled bus departure time + 30
-					// whish is (period for waiting students)
-					for(int i = 1; i <= busses.size(); i++) {
-						int NSDD = Time.clock + i*30;
-						Bus current = busses.peek();
-						current.setScheduledDormDeparture(NSDD);
-						busses.dequeue();
-						busses.enqueue(current);
-					}
+				noStudentsAndTimeToMove(bus, busses);
+//				if (bus.getCapacity() == 10 && bus.getScheduledDormDeparture() == Time.clock) {
+//                    //update the scheduled dormDeparture to the current scheduled bus departure time + 30
+//					// whish is (period for waiting students)
+//					for(int i = 1; i <= busses.size(); i++) {
+//						int NSDD = Time.clock + i*30;
+//						Bus current = busses.peek();
+//						current.setScheduledDormDeparture(NSDD);
+//						busses.dequeue();
+//						busses.enqueue(current);
+//					}
+					
+					
+					
 //					bus.setScheduledDormDeparture(Time.clock + 30);
                     // 5- continue loading students with updated scheduled dormDeparture
-					continue;
-				}
+//					continue;
+//				}
 		}//end students loop
 	
 		//loop in the array of arrived students and print the report
@@ -225,6 +239,18 @@ public class Drive {
 		studentPointer = 0;
 		//decrement the testDays
 		testDays--;
+		days++;
+		//new busses
+		
+		//************************BUSSES*************************
+        //create a Queue of busses
+		busses = new Queue(testBusses);
+		scheduledDormDeparture = 0;
+		for(int i = 0; i < testBusses; i++) {
+			//formula for cal the schduled dorm departure
+			scheduledDormDeparture = 30*i + 30;
+			busses.enqueue(new Bus(scheduledDormDeparture, i));
+		}
 		} //end days loop
 		
 		
@@ -242,5 +268,33 @@ public class Drive {
 			busses.enqueue(currentBus);
 		}
 	}
+	
+	public static ArrayList<Student> generateRandomStudents(int days) {
+		Scanner input = new Scanner(System.in);
+		System.out.println("Number of students in day#" + days);
+		int testStudents = input.nextInt();
+		ArrayList<Student> students = new ArrayList<>();
+		for(int i = 0; i < testStudents; i++) {
+			students.add(new Student());
+		}
+		Collections.sort(students);
+		return students;
+	}
+	
+	
+	public static void noStudentsAndTimeToMove(Bus bus, Queue busses) {
+		if (bus.getCapacity() == 10 && bus.getScheduledDormDeparture() == Time.clock) {
+            //update the scheduled dormDeparture to the current scheduled bus departure time + 30
+			// whish is (period for waiting students)
+			for(int i = 1; i <= busses.size(); i++) {
+				int NSDD = Time.clock + i*30;
+				Bus current = busses.peek();
+				current.setScheduledDormDeparture(NSDD);
+				busses.dequeue();
+				busses.enqueue(current);
+			}
+	}
 
+}
+	
 }
