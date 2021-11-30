@@ -25,7 +25,7 @@ class Queue
         // check for queue underflow
         if (isEmpty())
         {
-            System.out.println("Underflow\nProgram Terminated");
+            System.out.println("Take a taxi ya wahsh!\nDon't forget your Azkar");
             System.exit(1);
         }
  
@@ -41,7 +41,7 @@ class Queue
         // check for queue overflow
         if (isFull())
         {
-            System.out.println("Overflow\nProgram Terminated");
+            System.out.println("Take a taxi ya wahsh!\nDon't forget your Azkar");
             System.exit(1);
         }
  
@@ -57,7 +57,7 @@ class Queue
     {
         if (isEmpty())
         {
-            System.out.println("Underflow\nProgram Terminated");
+            System.out.println("Take a taxi ya wahsh!\nDon't forget your Azkar");
             System.exit(1);
         }
         return arr[front];

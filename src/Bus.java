@@ -7,19 +7,22 @@ public class Bus {
 	public boolean available;
 	public int capacity;
 	public int avalAt;
+	public int ID;
 	
 	
 	
 	public ArrayList<Flight> tripsArray = new ArrayList<>();
+	public ArrayList<Student> flightStudents = new ArrayList<>();
 	public int campusArrival;
 	public int dormDeparture;
 	public int scheduledDormDeparture;
 	
 	
-	public Bus(int scheduledDormDeparture) {
+	public Bus(int scheduledDormDeparture, int ID) {
 		this.setAvailable(true);
 		this.setCapacity(10);
-		this.setTripsArray(new RegularFlight());
+		this.setID(ID);
+//		this.setTripsArray(new RegularFlight());
 		this.setScheduledDormDeparture(scheduledDormDeparture);
 	}
 	
@@ -27,7 +30,7 @@ public class Bus {
 	public Bus(Flight trip, int capacity) {
 		this.setAvailable(true);
 		this.setCapacity(capacity);
-		this.setTripsArray(trip);
+		this.addTripsArray(trip);
 	}
 	
 	
@@ -40,6 +43,22 @@ public class Bus {
 	}
 	
 	
+	/**
+	 * @return the iD
+	 */
+	public int getID() {
+		return ID;
+	}
+
+
+	/**
+	 * @param iD the iD to set
+	 */
+	public void setID(int ID) {
+		this.ID = ID;
+	}
+
+
 	/**
 	 * @return the scheduledDormDeparture
 	 */
@@ -142,7 +161,7 @@ public class Bus {
 	/**
 	 * @param tripsArray the tripsArray to set
 	 */
-	public void setTripsArray( Flight trip) {
+	public void addTripsArray( Flight trip) {
 		this.tripsArray.add(trip);
 		// setting cumulative attributes
 //		this.setCapacity(trip.DISTANCE_TO_KAU + this.getCapacity());
@@ -185,17 +204,34 @@ public class Bus {
 	}
 
 
+	/**
+	 * @return the flightStudents
+	 */
+	public ArrayList<Student> getFlightStudents() {
+		return flightStudents;
+	}
+
+
+	/**
+	 * @param flightStudents the flightStudents to set
+	 */
+	public void addFlightStudents(Student student) {
+		this.flightStudents.add(student);
+	}
+
+
 	public void loadStudent(Student s) {
 		this.setCapacity(this.getCapacity() - 1);
 		//update the aval
 		if (this.getCapacity() == 0) {
 			this.setAvailable(false);
 		}
-		
-		Flight lastTrip = this.getTripsArray().get(this.getNumberTrips() - 1);
+
+//		Flight lastTrip = this.getTripsArray().get(this.getNumberTrips() - 1);
+		this.addFlightStudents(s);
 		//add student to the array of students in the flight
 		//P2: make casting dynamic
-		((RegularFlight)lastTrip).getStudentsInTrip().add(s);
+//		((RegularFlight)lastTrip).getStudentsInTrip().add(s);
 	}
 	
 	
@@ -216,26 +252,39 @@ public class Bus {
 
 
 	public void sendBus(int avalAt, ArrayList<Student> tempStudents) {
-		Flight currentFlight = this.getTripsArray().get(this.getNumberTrips() - 1);
+//		Flight currentFlight = this.getTripsArray().get(this.getNumberTrips() - 1);
+		Flight currentFlight = new RegularFlight();
+		this.addTripsArray(currentFlight);
+		
 		this.setAvailable(false);
-		this.setAvalAt(avalAt);
+		this.setAvalAt(avalAt  + 2*currentFlight.getMINUTES_TO_KAU());
+		this.setScheduledDormDeparture(avalAt  + 2*currentFlight.getMINUTES_TO_KAU() + 30);
 		this.setDormDeparture(Time.clock); //as the clock will be set to the time the bus was sent in main
 		this.setCampusArrival(Time.clock + currentFlight.getMINUTES_TO_KAU());
-		
+		this.setCapacity(10);		
 		//make students in this trip miss or catch
 		
 		currentFlight.setTimeOfArrival(this.getCampusArrival());
 		currentFlight.setTimeOfDeparture(this.getDormDeparture());
-		int numStudetns = currentFlight.studentsInTrip.size();
+//		int numStudetns = currentFlight.studentsInTrip.size();
+		int numStudetns = this.getFlightStudents().size();
 		for (int i = 0; i < numStudetns; i++) {
-			Student student = currentFlight.studentsInTrip.get(i);
+			Student student = this.getFlightStudents().get(i);
 			student.setIsCatch(this.getCampusArrival() <= student.getIntendedArrivalTime());
 			tempStudents.add(student);
+			currentFlight.studentsInTrip.add(student);
 		}
 		
 		System.out.println(currentFlight);
+		System.out.println("Bus ID: " + this.ID);
 		for(int i = 0; i < numStudetns; i++) {
 			System.out.println(currentFlight.studentsInTrip.get(i));
+		}
+		
+		this.getFlightStudents().clear();
+		
+		if (Time.clock >= 930) {
+			this.addTripsArray(new RegularFlight());
 		}
 		
 	}
